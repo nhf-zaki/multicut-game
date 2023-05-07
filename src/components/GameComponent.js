@@ -1,11 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
-import { withResizeDetector } from 'react-resize-detector';
+import { useResizeDetector, withResizeDetector } from 'react-resize-detector';
 
 import generateRandomTree from '../data/random-tree';
 
 function GameComponent() {
   const [data, setData] = useState(generateRandomTree(10, false));
+  const [cost, setCost] = useState(null);
 
   console.log(data);
 
@@ -30,14 +31,26 @@ function GameComponent() {
           : l
       ),
     }));
+    setCost((prevCost) => ({
+      ...prevCost,
+      links: data.links.map((l) =>
+        l.source.id === link.source.id && l.target.id === link.target.id
+          ? l.color === 'red'
+            ? { ...l, color: '' }
+            : { ...l, color: 'red' }
+          : l
+      ),
+    }));
   };
 
   const Graph = (props) => {
-    const { width = 0, height = 600 } = props;
+    const { width, height } = props;
+    console.log(props);
     const forceRef = useRef(null);
     useEffect(() => {
       forceRef.current.d3Force('charge').strength(-200);
     });
+    console.log(width, height);
 
     return (
       <ForceGraph2D
@@ -60,9 +73,8 @@ function GameComponent() {
     <div
       style={{
         background: 'whitesmoke',
-        width: 650,
-        height: 610,
-        color: '#1a73e8',
+        width: '100%',
+        height: '400px',
       }}
     >
       <MyGraph />

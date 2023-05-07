@@ -1,14 +1,15 @@
 import './App.css';
 import GameComponent from './components/GameComponent';
-// import TreeComponent from './components/TreeComponent';
+import MainMenu from './components/menu/MainMenu';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        {/* <TreeComponent /> */}
-        <GameComponent />
-      </header>
+      <header className="App-header">MultiCut Game</header>
+      <section className="Main">
+        {/* <GameComponent /> */}
+        <MainMenu />
+      </section>
     </div>
   );
 }
