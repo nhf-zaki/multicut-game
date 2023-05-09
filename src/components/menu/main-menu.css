@@ -48,13 +48,32 @@
   border-bottom-right-radius: 25px;
 } */
 
+.nav-btn {
+  display: block;
+  border: none;
+  outline: none;
+  border-radius: 15px;
+  padding: 10px 30px;
+  font-size: 0.8em;
+  font-weight: 400;
+  margin-top: 5vh;
+}
+
+.title {
+  margin-top: 4vh;
+  margin-bottom: -5vh;
+  font-size: 1.3em;
+  font-weight: 450;
+}
+
 .btn-grp {
   margin-top: 10vh;
   margin-bottom: 10vh;
   display: grid;
 }
 
-.btn-grp button {
+.btn-grp .btn {
+  text-decoration: none;
   background-color: #353a44;
   color: white;
   border: none;
@@ -67,7 +86,7 @@
   margin: 0.5em;
 }
 
-.btn-grp button:hover {
+.btn-grp .btn:hover {
   background-color: #7c869b;
 }
 
