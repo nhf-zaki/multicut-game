@@ -13,6 +13,10 @@ const router = createBrowserRouter([
     path: '/new-game',
     element: <NewGameMenu />,
   },
+  {
+    path: '/new-game/:gameType',
+    element: <GameComponent />,
+  },
 ]);
 
 function App() {
