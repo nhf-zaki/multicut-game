@@ -35,14 +35,10 @@ const fetchData = (gameType) => {
 };
 
 function GameComponent() {
-  const gameType = useParams().gameType;
-  console.log("i'm into game component my boy!!!", gameType);
-
-  const dataByType = fetchData(gameType);
-  console.log('dataByType', dataByType);
+  const dataByType = fetchData(useParams().gameType);
 
   const [data, setData] = useState(dataByType);
-  const [cost, setCost] = useState(null);
+  const [totalCost, setTotalCost] = useState(0);
 
   console.log(data);
 
@@ -62,32 +58,26 @@ function GameComponent() {
       ...prevData,
       links: prevData.links.map((l) =>
         l.source.id === link.source.id && l.target.id === link.target.id
-          ? l.color === 'red'
-            ? { ...l, color: '' }
-            : { ...l, color: 'red' }
+          ? l.cut === 'true'
+            ? { ...l, cut: 'false', dashed: [] }
+            : { ...l, cut: 'true', dashed: [2, 1] }
           : l
       ),
     }));
-    setCost((prevCost) => ({
-      ...prevCost,
-      links: data.links.map((l) =>
-        l.source.id === link.source.id && l.target.id === link.target.id
-          ? l.color === 'red'
-            ? { ...l, color: '' }
-            : { ...l, color: 'red' }
-          : l
-      ),
-    }));
+    // cut is not updated here, so reverse calculation is doing the correct calculation
+    link.cut
+      ? setTotalCost(totalCost - link.cost)
+      : setTotalCost(totalCost + link.cost);
   };
 
   const Graph = (props) => {
     const { width, height } = props;
-    console.log(props);
     const forceRef = useRef(null);
     useEffect(() => {
       forceRef.current.d3Force('charge').strength(-500);
     });
-    console.log(width, height);
+
+    console.log('totalCost', totalCost);
 
     return (
       <ForceGraph2D
@@ -96,75 +86,28 @@ function GameComponent() {
         height={height}
         backgroundColor="aliceblue"
         nodeLabel="id"
+        linkLabel={(link) => link.cost}
         nodeRelSize={6}
-        linkLabel="index"
         ref={forceRef}
         onLinkClick={handleLinkClick}
-        linkColor={(link) => link.color}
+        linkWidth={(link) =>
+          link.cost < 0 ? -1 * (link.cost / 5) + 3 : link.cost / 5 + 3
+        }
+        linkColor={(link) => (link.cost < 0 ? '#DC143C' : 'green')}
+        linkLineDash={(link) => link.dashed}
+        autoPauseRedraw="false"
+        enableNodeDrag="false"
         nodeCanvasObjectMode={() => 'after'}
         nodeCanvasObject={(node, ctx, globalScale) => {
-          // console.log('node', node);
           const label = node.id;
           const fontSize = 14 / globalScale;
           ctx.font = `${fontSize}px Sans-Serif`;
-          // const textWidth = ctx.measureText(label).width;
-          // const bckgDimensions = [textWidth, fontSize].map(
-          //   (n) => n + fontSize * 0.2
-          // ); // some padding
-
-          // ctx.fillStyle = 'rgba(45, 200, 135, 0.8)';
-          // ctx.fillRect(
-          //   node.x - bckgDimensions[0] / 2,
-          //   node.y - bckgDimensions[1] / 2,
-          //   ...bckgDimensions
-          // );
 
           ctx.textAlign = 'center';
           ctx.textBaseline = 'middle';
           ctx.fillStyle = node.color ? node.color : 'white';
           ctx.fillText(label, node.x, node.y);
-          // node.x = node.pos && node.pos.x ? node.pos.x : node.x;
-          // node.y = node.pos && node.pos.y ? node.pos.y : node.y;
-
-          // const pos = data.nodes.find((dn) => node.id === dn.id);
-          // node.x = data.nodes.map((dn)=>{
-          //   dn.pos_x;
-          // });
         }}
-        // nodeCanvasObject={(node, ctx, globalScale) => {
-        //   const label = node.id;
-        //   const fontSize = 12 / globalScale;
-        //   ctx.font = `${fontSize}px Sans-Serif`;
-        //   const textWidth = ctx.measureText(label).width;
-        //   const bckgDimensions = [textWidth, fontSize].map(
-        //     (n) => n + fontSize * 0.2
-        //   ); // some padding
-
-        //   ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-        //   ctx.fillRect(
-        //     node.x - bckgDimensions[0] / 2,
-        //     node.y - bckgDimensions[1] / 2,
-        //     ...bckgDimensions
-        //   );
-
-        //   ctx.textAlign = 'center';
-        //   ctx.textBaseline = 'middle';
-        //   ctx.fillStyle = node.color;
-        //   ctx.fillText(label, node.x, node.y);
-
-        //   node.__bckgDimensions = bckgDimensions; // to re-use in nodePointerAreaPaint
-        // }}
-        // nodePointerAreaPaint={(node, color, ctx) => {
-        //   console.log(node, color, ctx);
-        //   ctx.fillStyle = color;
-        //   const bckgDimensions = node.__bckgDimensions;
-        //   bckgDimensions &&
-        //     ctx.fillRect(
-        //       node.x - bckgDimensions[0] / 2,
-        //       node.y - bckgDimensions[1] / 2,
-        //       ...bckgDimensions
-        //     );
-        // }}
       />
     );
   };
