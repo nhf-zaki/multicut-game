@@ -1,12 +1,14 @@
-import React, { useRef, useEffect, useState } from 'react';
-import ForceGraph2D from 'react-force-graph-2d';
-import { useResizeDetector, withResizeDetector } from 'react-resize-detector';
+import React, { useState } from 'react';
 
 import generateRandomTree from '../data/random-tree';
 import generateCompleteGraph from '../data/complete-graph';
 import petersonGraph from '../data/peterson.json';
 import generateGridGraph from '../data/grid-graph';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import GraphComponent from './GraphComponent';
+import StopWatch from './StopWatch';
+
+import './GameComponent.css';
 
 const fetchData = (gameType) => {
   let dataByType;
@@ -35,6 +37,7 @@ const fetchData = (gameType) => {
 };
 
 function GameComponent() {
+  const navigate = useNavigate();
   const dataByType = fetchData(useParams().gameType);
 
   const [data, setData] = useState(dataByType);
@@ -70,59 +73,21 @@ function GameComponent() {
       : setTotalCost(totalCost + link.cost);
   };
 
-  const Graph = (props) => {
-    const { width, height } = props;
-    const forceRef = useRef(null);
-    useEffect(() => {
-      forceRef.current.d3Force('charge').strength(-500);
-    });
-
-    console.log('totalCost', totalCost);
-
-    return (
-      <ForceGraph2D
-        graphData={data}
-        width={width}
-        height={height}
-        backgroundColor="aliceblue"
-        nodeLabel="id"
-        linkLabel={(link) => link.cost}
-        nodeRelSize={6}
-        ref={forceRef}
-        onLinkClick={handleLinkClick}
-        linkWidth={(link) =>
-          link.cost < 0 ? -1 * (link.cost / 5) + 3 : link.cost / 5 + 3
-        }
-        linkColor={(link) => (link.cost < 0 ? '#DC143C' : 'green')}
-        linkLineDash={(link) => link.dashed}
-        autoPauseRedraw="false"
-        enableNodeDrag="false"
-        nodeCanvasObjectMode={() => 'after'}
-        nodeCanvasObject={(node, ctx, globalScale) => {
-          const label = node.id;
-          const fontSize = 14 / globalScale;
-          ctx.font = `${fontSize}px Sans-Serif`;
-
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillStyle = node.color ? node.color : 'white';
-          ctx.fillText(label, node.x, node.y);
-        }}
-      />
-    );
-  };
-
-  const MyGraph = withResizeDetector(Graph);
-
   return (
-    <div
-      style={{
-        background: 'whitesmoke',
-        width: '100%',
-        height: '400px',
-      }}
-    >
-      <MyGraph />
+    <div>
+      <div id="game-info" className="game-info">
+        <button className="nav-btn" onClick={() => navigate(-1)}>
+          <i className="fa fa-sign-out-alt fa-rotate-180" />
+          &nbsp;Exit
+        </button>
+        <header>total cost: {totalCost}</header>
+        <StopWatch />
+      </div>
+      <GraphComponent
+        data={data}
+        handleLinkClick={handleLinkClick}
+        totalCost={totalCost}
+      ></GraphComponent>
     </div>
   );
 }

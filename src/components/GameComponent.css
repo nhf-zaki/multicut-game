@@ -1,0 +1,12 @@
+.game-info {
+  /* display: flex;
+  height: 5vh;
+  align-items: stretch;
+  background-color: #ced9e4;
+  flex: 1; */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-auto-rows: 5vh;
+  grid-gap: 5px;
+  align-items: center;
+}
