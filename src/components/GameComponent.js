@@ -9,6 +9,7 @@ import GraphComponent from './GraphComponent';
 import StopWatch from './StopWatch';
 
 import './GameComponent.css';
+import axios from 'axios';
 
 const fetchData = (gameType) => {
   let dataByType;
@@ -45,6 +46,21 @@ function GameComponent() {
 
   console.log(data);
 
+  // const costs = prepareCostDict(data);
+
+  const requestBody = {
+    graph: data,
+  };
+
+  axios
+    .post('http://localhost:5000/multicut-solver', requestBody)
+    .then((response) => {
+      console.log(response);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
   // this part is useless until now
   data.nodes.forEach((node) => {
     node.val = (node.size * 100) | (node.degrees / 10);
@@ -76,11 +92,12 @@ function GameComponent() {
   return (
     <div>
       <div id="game-info" className="game-info">
-        <button className="nav-btn" onClick={() => navigate(-1)}>
+        <button className="exit-btn" onClick={() => navigate(-1)}>
           <i className="fa fa-sign-out-alt fa-rotate-180" />
           &nbsp;Exit
         </button>
-        <header>total cost: {totalCost}</header>
+        <p>Total Cost: {totalCost}</p>
+        <p>Optimal Cost: {totalCost}</p>
         <StopWatch />
       </div>
       <GraphComponent

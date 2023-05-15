@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React from 'react';
 import { useEffect } from 'react';
 import { useRef } from 'react';
@@ -30,8 +29,8 @@ function GraphComponent(props) {
         }
         linkColor={(link) => (link.cost < 0 ? '#DC143C' : 'green')}
         linkLineDash={(link) => link.dashed}
-        autoPauseRedraw="false"
-        enableNodeDrag="false"
+        autoPauseRedraw={false}
+        enableNodeDrag={false}
         nodeCanvasObjectMode={() => 'after'}
         nodeCanvasObject={(node, ctx, globalScale) => {
           const label = node.id;
