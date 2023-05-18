@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 function MainMenu() {
   return (
     <div>
-      <div className="btn-grp">
+      <div className="menu-grp">
         <Link to={`/new-game`} className="btn">
           New Game
         </Link>

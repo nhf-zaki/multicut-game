@@ -15,14 +15,26 @@ function NewGameMenu() {
         <Link to={`/new-game/tree`} className="btn">
           Tree
         </Link>
-        <Link to={`/new-game/complete-graph`} className="btn">
-          Complete Graph
+        <Link to={`/new-game/complete-graph-small`} className="btn">
+          Complete Graph (small)
         </Link>
         <Link to={`/new-game/peterson-graph`} className="btn">
           Peterson Graph
         </Link>
-        <Link to={`/new-game/grid-graph`} className="btn">
-          Grid Graph
+        <Link to={`/new-game/grid-graph-small`} className="btn">
+          Grid Graph (small)
+        </Link>
+        <Link to={`/new-game/complete-graph-medium`} className="btn">
+          Complete Graph (medium)
+        </Link>
+        <Link to={`/new-game/grid-graph-medium`} className="btn">
+          Grid Graph (medium)
+        </Link>
+        <Link to={`/new-game/complete-graph-large`} className="btn">
+          Complete Graph (large)
+        </Link>
+        <Link to={`/new-game/grid-graph-large`} className="btn">
+          Grid Graph (large)
         </Link>
         <Link to={`/new-game/custom`} className="btn">
           Custom Graph
