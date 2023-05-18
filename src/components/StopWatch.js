@@ -9,17 +9,14 @@ import { useRef } from 'react';
 // import ControlButtons from "../ControlButtons/ControlButtons";
 
 function StopWatch() {
-  //   console.log(useParams().gameType);
   const gameType = useParams().gameType;
   const [isActive, setIsActive] = useState(true);
-  // const [isPaused, setIsPaused] = useState(true);
   const [time, setTime] = useState(0);
   const t = useRef(0);
   const [completedTime, setCompletedTime] = useLocalStorage(
     'leaderboard',
     '{}'
   );
-  //   console.log('Time: ', time);
 
   React.useEffect(() => {
     let interval = null;
@@ -33,19 +30,16 @@ function StopWatch() {
       clearInterval(interval);
     }
     return () => {
-      //   setIsActive(!isActive);
       clearInterval(interval);
     };
   }, [isActive]);
 
   useEffect(() => {
     return () => {
-      console.log(typeof completedTime);
       if (
         Object.keys(completedTime).length &&
         typeof completedTime !== 'string'
       ) {
-        console.log('In here');
         setCompletedTime([
           ...completedTime,
           { time: t.current, type: gameType },
@@ -54,23 +48,9 @@ function StopWatch() {
         setCompletedTime([{ time: t.current, type: gameType }]);
       }
       //   console.log('Hook based on time', t.current);
-      console.log(completedTime);
+      console.log('completedTime', completedTime);
     };
   }, []);
-
-  // const handleStart = () => {
-  // 	setIsActive(true);
-  // 	setIsPaused(false);
-  // };
-
-  // const handlePauseResume = () => {
-  // 	setIsPaused(!isPaused);
-  // };
-
-  // const handleReset = () => {
-  // 	setIsActive(false);
-  // 	setTime(0);
-  // };
 
   return (
     <div className="stop-watch">
