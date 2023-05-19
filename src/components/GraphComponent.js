@@ -8,7 +8,7 @@ function GraphComponent(props) {
   const Graph = ({ width, height }) => {
     const forceRef = useRef(null);
     useEffect(() => {
-      forceRef.current.d3Force('charge').strength(-500);
+      forceRef.current.d3Force('charge').strength(props.chargeStrength);
     });
 
     console.log('totalCost', props.totalCost);

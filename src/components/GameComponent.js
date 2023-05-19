@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import generateRandomTree from '../data/random-tree';
 import generateCompleteGraph from '../data/complete-graph';
@@ -10,6 +10,8 @@ import StopWatch from './StopWatch';
 
 import './GameComponent.css';
 import axios from 'axios';
+import generateCosts from '../utils/generateCosts';
+import CompletionPopup from './game/completion/CompletionPopUp';
 
 const fetchData = (gameType) => {
   let dataByType;
@@ -18,14 +20,26 @@ const fetchData = (gameType) => {
     case 'tree':
       dataByType = generateRandomTree(10, false);
       break;
-    case 'complete-graph':
-      dataByType = generateCompleteGraph(10);
+    case 'complete-graph-small':
+      dataByType = generateCompleteGraph(4);
       break;
     case 'peterson-graph':
       dataByType = petersonGraph;
       break;
-    case 'grid-graph':
-      dataByType = generateGridGraph(10);
+    case 'grid-graph-small':
+      dataByType = generateGridGraph(3);
+      break;
+    case 'complete-graph-medium':
+      dataByType = generateCompleteGraph(6);
+      break;
+    case 'grid-graph-medium':
+      dataByType = generateGridGraph(5);
+      break;
+    case 'complete-graph-large':
+      dataByType = generateCompleteGraph(8);
+      break;
+    case 'grid-graph-large':
+      dataByType = generateGridGraph(7);
       break;
     case 'custom':
       dataByType = generateRandomTree(15, false);
@@ -34,32 +48,76 @@ const fetchData = (gameType) => {
       break;
   }
 
+  dataByType = generateCosts(dataByType);
+
   return dataByType;
+};
+
+const chargeStrength = (gameType) => {
+  let strength;
+
+  switch (gameType) {
+    case 'tree':
+      strength = -50;
+      break;
+    case 'complete-graph-small':
+    case 'complete-graph-medium':
+    case 'complete-graph-large':
+      strength = -800;
+      break;
+    case 'peterson-graph':
+      strength = -500;
+      break;
+    case 'grid-graph-small':
+      strength = -500;
+      break;
+    case 'grid-graph-medium':
+      strength = -70;
+      break;
+    case 'grid-graph-large':
+      strength = -30;
+      break;
+    default:
+      strength = -500;
+      break;
+  }
+
+  return strength;
 };
 
 function GameComponent() {
   const navigate = useNavigate();
-  const dataByType = fetchData(useParams().gameType);
+  const gameType = useParams().gameType;
+  const dataByType = fetchData(gameType);
 
   const [data, setData] = useState(dataByType);
   const [totalCost, setTotalCost] = useState(0);
+  const [optimalCost, setOptimalCost] = useState(0);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   console.log(data);
 
   // const costs = prepareCostDict(data);
 
   const requestBody = {
-    graph: data,
+    graph: dataByType,
   };
 
-  axios
-    .post('http://localhost:5000/multicut-solver', requestBody)
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+  useEffect(() => {
+    const solverResp = async () => {
+      await axios
+        .post('http://localhost:5000/multicut-solver', requestBody)
+        .then((response) => {
+          console.log('response', response.data);
+          console.log('opt val', response.data.optimal_value);
+          setOptimalCost(response.data.optimal_value);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    };
+    solverResp();
+  }, []);
 
   // this part is useless until now
   data.nodes.forEach((node) => {
@@ -84,29 +142,59 @@ function GameComponent() {
       ),
     }));
     // cut is not updated here, so reverse calculation is doing the correct calculation
+    // TODO: there is a bug. when node is dragged, the data is updated
+    // and the complete calculation goes in wrong direction
     link.cut
       ? setTotalCost(totalCost - link.cost)
       : setTotalCost(totalCost + link.cost);
   };
 
-  return (
-    <div>
-      <div id="game-info" className="game-info">
-        <button className="exit-btn" onClick={() => navigate(-1)}>
-          <i className="fa fa-sign-out-alt fa-rotate-180" />
-          &nbsp;Exit
-        </button>
-        <p>Total Cost: {totalCost}</p>
-        <p>Optimal Cost: {totalCost}</p>
-        <StopWatch />
+  // useEffect(
+  //   (paramLink) => {
+  //     console.log('data change hook', paramLink);
+  //     data.links.forEach((link) => {
+  //       if (link.cut) {
+  //         setTotalCost((prevCost) => prevCost + link.cost);
+  //       }
+  //     });
+  //   },
+  //   [data]
+  // );
+
+  useEffect(() => {
+    if (optimalCost < 0 && totalCost === optimalCost) {
+      setIsCompleted(true);
+    }
+  }, [totalCost, optimalCost]);
+
+  if (isCompleted) {
+    const scores = [gameType, totalCost];
+    return (
+      <div>
+        <CompletionPopup scores={scores} />
       </div>
-      <GraphComponent
-        data={data}
-        handleLinkClick={handleLinkClick}
-        totalCost={totalCost}
-      ></GraphComponent>
-    </div>
-  );
+    );
+  } else {
+    return (
+      <div>
+        <div id="game-info" className="game-info">
+          <button className="exit-btn" onClick={() => navigate(-1)}>
+            <i className="fa fa-sign-out-alt fa-rotate-180" />
+            &nbsp;Exit
+          </button>
+          <p>Total Cost: {totalCost}</p>
+          {gameType !== 'tree' && <p>Optimal Cost: {optimalCost}</p>}
+          <StopWatch />
+        </div>
+        <GraphComponent
+          data={data}
+          handleLinkClick={handleLinkClick}
+          totalCost={totalCost}
+          chargeStrength={chargeStrength(gameType)}
+        ></GraphComponent>
+      </div>
+    );
+  }
 }
 
 export default GameComponent;
