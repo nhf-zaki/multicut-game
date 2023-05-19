@@ -18,7 +18,7 @@ function StopWatch() {
     '{}'
   );
 
-  React.useEffect(() => {
+  useEffect(() => {
     let interval = null;
 
     if (isActive) {
