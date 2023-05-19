@@ -13,8 +13,10 @@
 
 .popup-content {
   background-color: #fff;
-  padding: 20px;
+  border-radius: 25px;
+  padding: 25px;
   text-align: center;
+  align-items: center;
   animation: popup-animation 1s ease-in-out;
 }
 
@@ -31,4 +33,74 @@
     opacity: 1;
     transform: scale(1);
   }
+}
+
+.comp-btns {
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-comp {
+  text-decoration: none;
+  background-color: #353a44;
+  color: white;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 25px;
+  padding: 10px 60px;
+  font-size: 0.7em;
+  font-weight: 500;
+  margin: 0.2em;
+}
+
+.btn-comp:hover {
+  background-color: #7c869b;
+}
+
+/* Leaderboard Results */
+.scoreboard-results {
+  margin: 5vh 0vh;
+  width: 100%;
+  border-collapse: collapse;
+  border-radius: 15px;
+  background-color: #f1f1f1;
+}
+.scoreboard-results thead th {
+  padding: 15px 20px;
+  color: #353a44;
+  font-size: 1em;
+  font-weight: bold;
+  border-bottom: 2px solid #232323;
+}
+
+.scoreboard-results tbody tr td {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  /* padding-left: 25px; */
+  padding-right: 25px;
+  /* padding: 15px 25px; */
+  font-size: 16px;
+  text-align: left;
+  border-bottom: 1px solid #818181;
+}
+
+.scoreboard-results tbody tr td:first-child {
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-left: 25px;
+  padding-right: 5px;
+  font-size: 16px;
+  text-align: left;
+  border-bottom: 0;
+}
+
+.scoreboard-results tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.scoreboard-results tbody tr td:last-child {
+  padding: 15px 25px;
+  font-size: 16px;
+  text-align: right;
 }
