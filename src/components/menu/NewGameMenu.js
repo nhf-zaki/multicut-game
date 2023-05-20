@@ -1,6 +1,7 @@
 import React from 'react';
-import './main-menu.css';
 import { Link, useNavigate } from 'react-router-dom';
+
+import './main-menu.css';
 
 function NewGameMenu() {
   const navigate = useNavigate();
@@ -12,9 +13,9 @@ function NewGameMenu() {
       </button>
       <div className="title">New Game</div>
       <div className="btn-grp">
-        <Link to={`/new-game/tree`} className="btn">
+        {/* <Link to={`/new-game/tree`} className="btn">
           Tree
-        </Link>
+        </Link> */}
         <Link to={`/new-game/complete-graph-small`} className="btn">
           Complete Graph (small)
         </Link>

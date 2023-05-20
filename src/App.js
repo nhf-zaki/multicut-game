@@ -1,8 +1,12 @@
-import './App.css';
-import GameComponent from './components/GameComponent';
-import MainMenu from './components/menu/MainMenu';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import MainMenu from './components/menu/MainMenu';
 import NewGameMenu from './components/menu/NewGameMenu';
+import GameComponent from './components/game/GameComponent';
+import Tutorial from './components/tutorial/Tutorial';
+import Leaderboard from './components/leaderboard/Leaderboard';
+
+import './App.css';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +21,14 @@ const router = createBrowserRouter([
     path: '/new-game/:gameType',
     element: <GameComponent />,
   },
+  {
+    path: '/tutorial',
+    element: <Tutorial />,
+  },
+  {
+    path: '/leaderboard',
+    element: <Leaderboard />,
+  },
 ]);
 
 function App() {
@@ -25,8 +37,6 @@ function App() {
       <header className="App-header">MultiCut Game</header>
       <section className="Main">
         <RouterProvider router={router} />
-        {/* <GameComponent /> */}
-        {/* <MainMenu /> */}
       </section>
     </div>
   );

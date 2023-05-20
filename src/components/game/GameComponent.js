@@ -1,17 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
-import generateRandomTree from '../data/random-tree';
-import generateCompleteGraph from '../data/complete-graph';
-import petersonGraph from '../data/peterson.json';
-import generateGridGraph from '../data/grid-graph';
 import { useNavigate, useParams } from 'react-router-dom';
+
+import generateRandomTree from '../../data/random-tree';
+import generateCompleteGraph from '../../data/complete-graph';
+import petersonGraph from '../../data/peterson.json';
+import generateGridGraph from '../../data/grid-graph';
+import generateCosts from '../../utils/generateCosts';
+
+import CompletionPopup from './completion/CompletionPopUp';
+import StopWatch from './stop-watch/StopWatch';
 import GraphComponent from './GraphComponent';
-import StopWatch from './StopWatch';
+
+import axios from 'axios';
+import useLocalStorage from '../../hooks/useLocalStorage';
 
 import './GameComponent.css';
-import axios from 'axios';
-import generateCosts from '../utils/generateCosts';
-import CompletionPopup from './game/completion/CompletionPopUp';
 
 const fetchData = (gameType) => {
   let dataByType;
@@ -95,9 +99,12 @@ function GameComponent() {
   const [optimalCost, setOptimalCost] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
 
-  console.log(data);
+  const [completedTime, setCompletedTime] = useLocalStorage(
+    'leaderboard',
+    '{}'
+  );
 
-  // const costs = prepareCostDict(data);
+  const timeRef = useRef(0);
 
   const requestBody = {
     graph: dataByType,
@@ -142,24 +149,10 @@ function GameComponent() {
       ),
     }));
     // cut is not updated here, so reverse calculation is doing the correct calculation
-    // TODO: there is a bug. when node is dragged, the data is updated
-    // and the complete calculation goes in wrong direction
     link.cut
       ? setTotalCost(totalCost - link.cost)
       : setTotalCost(totalCost + link.cost);
   };
-
-  // useEffect(
-  //   (paramLink) => {
-  //     console.log('data change hook', paramLink);
-  //     data.links.forEach((link) => {
-  //       if (link.cut) {
-  //         setTotalCost((prevCost) => prevCost + link.cost);
-  //       }
-  //     });
-  //   },
-  //   [data]
-  // );
 
   useEffect(() => {
     if (optimalCost < 0 && totalCost === optimalCost) {
@@ -167,8 +160,35 @@ function GameComponent() {
     }
   }, [totalCost, optimalCost]);
 
+  useEffect(() => {
+    console.log('Use Effect Time', timeRef.current);
+    if (timeRef.current > 0) {
+      if (
+        Object.keys(completedTime).length &&
+        typeof completedTime !== 'string'
+      ) {
+        setCompletedTime([
+          ...completedTime,
+          { time: timeRef.current, type: gameType },
+        ]);
+      } else {
+        setCompletedTime([{ time: timeRef.current, type: gameType }]);
+      }
+    }
+    //   console.log('Hook based on time', t.current);
+    console.log('completedTime', completedTime);
+  }, [isCompleted]);
+
   if (isCompleted) {
-    const scores = [gameType, totalCost];
+    const time = timeRef.current;
+    let ms = ('0' + ((time / 10) % 100)).slice(-2);
+    let seconds = ('0' + Math.floor((time / 1000) % 60)).slice(-2);
+    let minutes = ('0' + Math.floor((time / 60000) % 60)).slice(-2);
+    const scores = {
+      gameType: gameType,
+      totalCost: totalCost,
+      completedTime: `${minutes}:${seconds}.${ms}0`,
+    };
     return (
       <div>
         <CompletionPopup scores={scores} />
@@ -184,7 +204,7 @@ function GameComponent() {
           </button>
           <p>Total Cost: {totalCost}</p>
           {gameType !== 'tree' && <p>Optimal Cost: {optimalCost}</p>}
-          <StopWatch />
+          <StopWatch ref={timeRef} />
         </div>
         <GraphComponent
           data={data}

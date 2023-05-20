@@ -1,6 +1,5 @@
 import React from 'react';
-import { useEffect } from 'react';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import ForceGraph2D from 'react-force-graph-2d';
 import { withResizeDetector } from 'react-resize-detector';
 
@@ -30,7 +29,7 @@ function GraphComponent(props) {
         linkColor={(link) => (link.cost < 0 ? '#DC143C' : 'green')}
         linkLineDash={(link) => link.dashed}
         autoPauseRedraw={false}
-        enableNodeDrag={false}
+        // enableNodeDrag={false}
         nodeCanvasObjectMode={() => 'after'}
         nodeCanvasObject={(node, ctx, globalScale) => {
           const label = node.id;

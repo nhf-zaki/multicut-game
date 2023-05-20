@@ -1,6 +1,7 @@
 import React from 'react';
-import './main-menu.css';
 import { Link } from 'react-router-dom';
+
+import './main-menu.css';
 
 function MainMenu() {
   return (
