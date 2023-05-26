@@ -10,8 +10,6 @@ function GraphComponent(props) {
       forceRef.current.d3Force('charge').strength(props.chargeStrength);
     });
 
-    console.log('totalCost', props.totalCost);
-
     return (
       <ForceGraph2D
         graphData={props.data}
@@ -28,7 +26,7 @@ function GraphComponent(props) {
         }
         linkColor={(link) => (link.cost < 0 ? '#DC143C' : 'green')}
         linkLineDash={(link) => link.dashed}
-        autoPauseRedraw={false}
+        // autoPauseRedraw={false}
         // enableNodeDrag={false}
         nodeCanvasObjectMode={() => 'after'}
         nodeCanvasObject={(node, ctx, globalScale) => {

@@ -22,8 +22,6 @@ const Leaderboard = () => {
 
   const types = Object.keys(typeMapping);
 
-  console.log('types', types);
-
   const [activeTab, setActiveTab] = useState(types[0]); // Set the first tab as active by default
 
   const handleTabClick = (type) => {

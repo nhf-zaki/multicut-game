@@ -7,9 +7,6 @@ import './popup.css';
 const CompletionPopup = ({ scores }) => {
   const [showPopup, setShowPopup] = useState(false);
 
-  console.log(scores);
-  console.log(typeof scores);
-
   useEffect(() => {
     setShowPopup(true); // Show the pop-up window when component mounts
   }, []);

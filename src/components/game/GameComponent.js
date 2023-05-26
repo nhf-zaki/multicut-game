@@ -19,7 +19,6 @@ import './GameComponent.css';
 
 const fetchData = (gameType) => {
   let dataByType;
-  console.log('game type', gameType);
   switch (gameType) {
     case 'tree':
       dataByType = generateRandomTree(10, false);
@@ -116,7 +115,6 @@ function GameComponent() {
         .post('http://localhost:5000/multicut-solver', requestBody)
         .then((response) => {
           console.log('response', response.data);
-          console.log('opt val', response.data.optimal_value);
           setOptimalCost(response.data.optimal_value);
         })
         .catch((error) => {
@@ -161,7 +159,6 @@ function GameComponent() {
   }, [totalCost, optimalCost]);
 
   useEffect(() => {
-    console.log('Use Effect Time', timeRef.current);
     if (timeRef.current > 0) {
       if (
         Object.keys(completedTime).length &&
@@ -175,8 +172,6 @@ function GameComponent() {
         setCompletedTime([{ time: timeRef.current, type: gameType }]);
       }
     }
-    //   console.log('Hook based on time', t.current);
-    console.log('completedTime', completedTime);
   }, [isCompleted]);
 
   if (isCompleted) {
