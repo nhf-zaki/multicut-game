@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import typeMapping from '../../utils/typeMapping';
 
 import './leaderboard.css';
+import getTimeObj from '../../utils/timeObject';
 
 const prepareGroupedData = () => {
   const leaderboardData = JSON.parse(localStorage.getItem('leaderboard'));
@@ -12,7 +13,10 @@ const prepareGroupedData = () => {
     if (!groupedData[item.type]) {
       groupedData[item.type] = [];
     }
-    groupedData[item.type].push(item);
+    groupedData[item.type].push({
+      type: item.type,
+      timeObj: getTimeObj(item.time),
+    });
   });
   return groupedData;
 };
@@ -72,9 +76,8 @@ const Leaderboard = () => {
                       <td>{index + 1}</td>
                       <td>{typeMapping[item.type]}</td>
                       <td>
-                        {('0' + Math.floor((item.time / 60000) % 60)).slice(-2)}
-                        :{('0' + Math.floor((item.time / 1000) % 60)).slice(-2)}
-                        .{('0' + ((item.time / 10) % 100)).slice(-2)}0
+                        {item.timeObj.minutes}:{item.timeObj.seconds}.
+                        {item.timeObj.millis}0
                       </td>
                     </tr>
                   ))}

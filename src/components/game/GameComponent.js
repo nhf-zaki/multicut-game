@@ -16,6 +16,7 @@ import axios from 'axios';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
 import './GameComponent.css';
+import getTimeObj from '../../utils/timeObject';
 
 const fetchData = (gameType) => {
   let dataByType;
@@ -175,14 +176,11 @@ function GameComponent() {
   }, [isCompleted]);
 
   if (isCompleted) {
-    const time = timeRef.current;
-    let ms = ('0' + ((time / 10) % 100)).slice(-2);
-    let seconds = ('0' + Math.floor((time / 1000) % 60)).slice(-2);
-    let minutes = ('0' + Math.floor((time / 60000) % 60)).slice(-2);
+    const timeObj = getTimeObj(timeRef.current);
     const scores = {
       gameType: gameType,
       totalCost: totalCost,
-      completedTime: `${minutes}:${seconds}.${ms}0`,
+      completedTime: `${timeObj.minutes}:${timeObj.seconds}.${timeObj.millis}0`,
     };
     return (
       <div>

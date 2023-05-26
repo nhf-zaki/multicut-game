@@ -1,18 +1,14 @@
 import React from 'react';
 import './Timer.css';
+import getTimeObj from '../../../utils/timeObject';
 
 export default function Timer(props) {
+  const timeObj = getTimeObj(props.time);
   return (
     <div className="timer">
-      <span className="digits">
-        {('0' + Math.floor((props.time / 60000) % 60)).slice(-2)}:
-      </span>
-      <span className="digits">
-        {('0' + Math.floor((props.time / 1000) % 60)).slice(-2)}.
-      </span>
-      <span className="digits mili-sec">
-        {('0' + ((props.time / 10) % 100)).slice(-2)}0
-      </span>
+      <span className="digits">{timeObj.minutes}:</span>
+      <span className="digits">{timeObj.seconds}.</span>
+      <span className="digits mili-sec">{timeObj.millis}0</span>
     </div>
   );
 }
