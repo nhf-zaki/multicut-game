@@ -31,19 +31,19 @@ const fetchData = (gameType) => {
       dataByType = petersonGraph;
       break;
     case 'grid-graph-small':
-      dataByType = generateGridGraph(3);
+      dataByType = generateGridGraph(3, 4);
       break;
     case 'complete-graph-medium':
       dataByType = generateCompleteGraph(6);
       break;
     case 'grid-graph-medium':
-      dataByType = generateGridGraph(5);
+      dataByType = generateGridGraph(5, 6);
       break;
     case 'complete-graph-large':
       dataByType = generateCompleteGraph(8);
       break;
     case 'grid-graph-large':
-      dataByType = generateGridGraph(7);
+      dataByType = generateGridGraph(7, 8);
       break;
     case 'custom':
       dataByType = generateRandomTree(15, false);

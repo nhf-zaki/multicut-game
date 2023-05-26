@@ -10,7 +10,7 @@ function Tutorial() {
           &nbsp; Back to Main Menu
         </Link>
       </div>
-      Tutorial
+      <div className="title">Tutorial</div>
     </div>
   );
 }

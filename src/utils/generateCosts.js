@@ -7,8 +7,6 @@ function generateCosts(data) {
     })),
   };
 
-  console.log(updatedData);
-
   return updatedData;
 }
 
