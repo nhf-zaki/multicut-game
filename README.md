@@ -1,3 +1,9 @@
+# Getting started for Multicut Game
+
+This game can be played by integrating the solver API. Solver API is needed for a game completion and show optimal solution.
+
+The rest of the intructions are generalized one to getting started with a React Application.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
