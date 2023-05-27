@@ -1,0 +1,35 @@
+{
+  "nodes": [
+    { "id": 0, "x": 0, "y": 0 },
+    { "id": 1, "x": 1, "y": 0 },
+    { "id": 2, "x": 2, "y": 0 },
+    { "id": 3, "x": 3, "y": 0 },
+    { "id": 4, "x": 0, "y": 1 },
+    { "id": 5, "x": 1, "y": 1 },
+    { "id": 6, "x": 2, "y": 1 },
+    { "id": 7, "x": 3, "y": 1 },
+    { "id": 8, "x": 0, "y": 2 },
+    { "id": 9, "x": 1, "y": 2 },
+    { "id": 10, "x": 2, "y": 2 },
+    { "id": 11, "x": 3, "y": 2 }
+  ],
+  "links": [
+    { "source": 0, "target": 1, "cost": 5 },
+    { "source": 0, "target": 4, "cost": 7 },
+    { "source": 1, "target": 2, "cost": -7 },
+    { "source": 1, "target": 5, "cost": 9 },
+    { "source": 2, "target": 3, "cost": 9 },
+    { "source": 2, "target": 6, "cost": 6 },
+    { "source": 3, "target": 7, "cost": 7 },
+    { "source": 4, "target": 5, "cost": -5 },
+    { "source": 4, "target": 8, "cost": 5 },
+    { "source": 5, "target": 6, "cost": -4 },
+    { "source": 5, "target": 9, "cost": 4 },
+    { "source": 6, "target": 7, "cost": 4 },
+    { "source": 6, "target": 10, "cost": 7 },
+    { "source": 7, "target": 11, "cost": 9 },
+    { "source": 8, "target": 9, "cost": 8 },
+    { "source": 9, "target": 10, "cost": 3 },
+    { "source": 10, "target": 11, "cost": -6 }
+  ]
+}

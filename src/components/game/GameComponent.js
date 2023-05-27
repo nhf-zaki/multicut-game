@@ -141,9 +141,9 @@ function GameComponent() {
       ...prevData,
       links: prevData.links.map((l) =>
         l.source.id === link.source.id && l.target.id === link.target.id
-          ? l.cut === 'true'
-            ? { ...l, cut: 'false', dashed: [] }
-            : { ...l, cut: 'true', dashed: [2, 1] }
+          ? l.cut
+            ? { ...l, cut: false, dashed: [] }
+            : { ...l, cut: true, dashed: [2, 1] }
           : l
       ),
     }));
