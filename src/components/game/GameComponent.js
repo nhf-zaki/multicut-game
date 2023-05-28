@@ -202,7 +202,6 @@ function GameComponent() {
         <GraphComponent
           data={data}
           handleLinkClick={handleLinkClick}
-          totalCost={totalCost}
           chargeStrength={chargeStrength(gameType)}
         ></GraphComponent>
       </div>
