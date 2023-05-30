@@ -15,7 +15,7 @@ import GraphComponent from './GraphComponent';
 import axios from 'axios';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
-import './GameComponent.css';
+import './game.css';
 import getTimeObj from '../../utils/timeObject';
 
 const fetchData = (gameType) => {
