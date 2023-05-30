@@ -28,6 +28,14 @@ function GraphComponent(props) {
         linkLineDash={(link) => link.dashed}
         // autoPauseRedraw={false}
         // enableNodeDrag={false}
+        onNodeDrag={(node) => {
+          node.fx = node.x;
+          node.fy = node.y;
+        }}
+        onNodeDragEnd={(node) => {
+          node.fx = node.x;
+          node.fy = node.y;
+        }}
         nodeCanvasObjectMode={() => 'after'}
         nodeCanvasObject={(node, ctx, globalScale) => {
           const label = node.id;
