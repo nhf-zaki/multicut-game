@@ -196,7 +196,9 @@ function GameComponent() {
             &nbsp;Exit
           </button>
           <p>Total Cost: {totalCost}</p>
-          {gameType !== 'tree' && <p>Optimal Cost: {optimalCost}</p>}
+          {gameType !== 'tree' && (
+            <p>Optimal Cost: {optimalCost === 0 ? '...' : optimalCost}</p>
+          )}
           <StopWatch ref={timeRef} />
         </div>
         <GraphComponent
