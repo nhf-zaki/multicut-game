@@ -143,7 +143,7 @@ function GameComponent() {
         l.source.id === link.source.id && l.target.id === link.target.id
           ? l.cut
             ? { ...l, cut: false, dashed: [] }
-            : { ...l, cut: true, dashed: [2, 1] }
+            : { ...l, cut: true, dashed: [1, 2] }
           : l
       ),
     }));
