@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import MainMenu from './components/menu/MainMenu';
 import NewGameMenu from './components/menu/NewGameMenu';
 import GameComponent from './components/game/GameComponent';
+import ChallengeComponent from './components/game/ChallengeComponent';
 import Tutorial from './components/tutorial/Tutorial';
 import Leaderboard from './components/leaderboard/Leaderboard';
 
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: '/new-game/:gameType',
     element: <GameComponent />,
+  },
+  {
+    path: '/challenge',
+    element: <ChallengeComponent />,
   },
   {
     path: '/tutorial',
