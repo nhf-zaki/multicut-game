@@ -1,0 +1,62 @@
+.t-container {
+  display: -webkit-inline-flex;
+  width: 70% !important;
+  margin-top: 3vh;
+  flex-grow: 1;
+}
+
+.t-content {
+  margin-bottom: 20px;
+  text-align: justify;
+}
+
+/* Style your headings, paragraphs, and other elements as needed */
+.t-content h1 {
+  font-size: 1.1em;
+  font-weight: 430;
+  margin-bottom: 2vh;
+}
+
+.t-content p {
+  /* font-size: 16px; */
+  line-height: 1.5;
+  margin-bottom: 1.5vh;
+}
+
+/* Example styling for images within the content */
+.t-content img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Add styling for the image caption */
+.t-content figure {
+  position: relative;
+  margin: 0;
+  padding: 1vh;
+}
+
+.t-content figcaption {
+  width: 100%;
+  /* background-color: rgba(0, 0, 0, 0.7); */
+  /* color: #fff; */
+  padding: 1vh;
+  /* font-size: 14px; */
+  text-align: center;
+}
+
+/* Example styling for links within the content */
+.t-content a {
+  color: #007bff;
+  text-decoration: underline;
+}
+
+.tutorial-body {
+  display: inline-block;
+  width: 70% !important;
+  justify-content: stretch;
+}
+
+.th1 {
+  font-weight: bold;
+}

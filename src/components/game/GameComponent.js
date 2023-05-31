@@ -7,6 +7,7 @@ import generateCompleteGraph from '../../data/complete-graph';
 import petersonGraph from '../../data/peterson.json';
 import generateGridGraph from '../../data/grid-graph';
 import generateCosts from '../../utils/generateCosts';
+import gridTest from '../../data/grid-test.json';
 
 import CompletionPopup from './completion/CompletionPopUp';
 import StopWatch from './stop-watch/StopWatch';
@@ -46,13 +47,15 @@ const fetchData = (gameType) => {
       dataByType = generateGridGraph(7, 8);
       break;
     case 'custom':
-      dataByType = generateRandomTree(15, false);
+      dataByType = gridTest;
       break;
     default:
       break;
   }
 
-  dataByType = generateCosts(dataByType);
+  if (gameType !== 'custom') {
+    dataByType = generateCosts(dataByType);
+  }
 
   return dataByType;
 };

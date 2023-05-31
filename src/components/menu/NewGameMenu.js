@@ -37,8 +37,11 @@ function NewGameMenu() {
         <Link to={`/new-game/grid-graph-large`} className="btn">
           Grid Graph (large)
         </Link>
-        <Link to={`/new-game/custom`} className="btn">
-          Custom Graph
+        {/* <Link to={`/new-game/custom`} className="btn">
+          Grid Test
+        </Link> */}
+        <Link to={`/challenge`} className="btn">
+          Challenge (10 min)
         </Link>
       </div>
     </div>
