@@ -154,7 +154,7 @@ function GameComponent() {
   };
 
   useEffect(() => {
-    if (optimalCost < 0 && totalCost === optimalCost) {
+    if (optimalCost !== 0 && totalCost === optimalCost) {
       setIsCompleted(true);
     }
   }, [totalCost, optimalCost]);
