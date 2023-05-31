@@ -17,7 +17,34 @@ function Tutorial() {
       <div className="title">Tutorial</div>
       <div className="t-container">
         <div className="t-content">
-          <h1>Game Logic</h1>
+          <h1>Game Modes</h1>
+          <p>
+            In new game menu, you can choose between your preferred graph to
+            start the game. All the options, except "Challenge", are for how
+            fast you can solve the problem. In "Challenge" option, you have 10
+            minutes time. Within the time the objective would be how many
+            problems can you solve.
+          </p>
+          <h1>Interactions</h1>
+          <p>
+            Clicking on an edge is considered as a cut, and displayed as a
+            dashed line. Subsequent click change the edge as uncut / cut. Hover
+            over an edge displays the cost of the edge. Edge thickness is a
+            visual cue to have a rough estimation about the cost of the edge.
+            You can drag a node to its suitable position for your convenience.
+          </p>
+          <h1>Objective</h1>
+          <p>
+            The objective is to cut the given graph into multiple disjoint
+            components. The target would be to minimalize the total cost. In
+            this case, only valid multicuts are allowed.
+          </p>
+          <p>
+            Green colored edges have positive cost, this means that you will try
+            to preserve those edges. On the other hand, red colored edges have
+            negative cost, means you will try to cut those as many as possible.
+          </p>
+          <h1>Valid Multicut</h1>
           <p>
             In the multicut problem, it is important to note that cutting
             arbitrary edges does not necessarily constitute a valid solution.
