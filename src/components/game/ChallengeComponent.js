@@ -16,32 +16,29 @@ import './game.css';
 import getTimeObj from '../../utils/timeObject';
 
 const fetchData = () => {
-  console.log('data fetch call');
   const randInts = [];
 
   for (let i = 0; i < 2; i++) {
     const ri = Math.floor(Math.random() * 4) + 3;
     randInts.push(ri);
   }
-  console.log(randInts);
+  randInts.sort();
 
-  const graph = generateGridGraph(randInts[0], randInts[1]);
-  console.log('graph', graph);
-
-  return generateCosts(
-    generateGridGraph(Math.min(randInts), Math.max(randInts))
-  );
+  return generateCosts(generateGridGraph(randInts[0], randInts[1]));
 };
 
 const chargeStrength = (nodesLength = 20) => {
-  return nodesLength < 30 ? -500 : nodesLength > 40 ? -30 : -70;
+  // TODO: need to add more suitable condition
+  return nodesLength < 15 ? -500 : nodesLength > 40 ? -30 : -70;
 };
 
 function ChallengeComponent() {
   const navigate = useNavigate();
   const gameType = useParams().gameType;
+  // const dataByType = fetchData(gameType);
 
-  const [data, setData] = useState();
+  // const [data, setData] = useState(dataByType);
+  const [data, setData] = useState(fetchData());
   const [totalCost, setTotalCost] = useState(0);
   const [optimalCost, setOptimalCost] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
@@ -71,39 +68,59 @@ function ChallengeComponent() {
       : setTotalCost(totalCost + link.cost);
   };
 
-  const requestBody = {
-    graph: data,
-  };
-
-  const solverResp = async () => {
-    await axios
-      .post('http://localhost:5000/multicut-solver', requestBody)
-      .then((response) => {
-        console.log('response', response.data);
-        setOptimalCost(response.data.optimal_value);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  // initial call to solver
   useEffect(() => {
-    setData(fetchData());
-    solverResp();
+    const fetchDataAndInitialize = async () => {
+      console.log('getting initial data and solver call', data);
+      try {
+        const response = await axios.post(
+          'http://localhost:5000/multicut-solver',
+          {
+            graph: data,
+          }
+        );
+        console.log('init response', response.data);
+        setOptimalCost(response.data.optimal_value);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchDataAndInitialize(); // Call the function to fetch initial data and initialize solver
   }, []);
 
   useEffect(() => {
     if (optimalCost !== 0 && totalCost === optimalCost) {
-      // setIsCompleted(true);
-      setSolvedCount((prevCount) => prevCount + 1);
+      setSolvedCount((prevCount) => prevCount + 1); // Increment solvedCount
     }
   }, [totalCost, optimalCost]);
 
   useEffect(() => {
-    const newData = fetchData();
-    setData(newData);
-    console.log('newData', newData, 'cost:', totalCost);
+    const generateNewDataAndCallSolver = async () => {
+      const newData = fetchData(); // Generate new data
+      setData(newData);
+      setTotalCost(0);
+      console.log(
+        'setting new data, resetting totalCost and solver call',
+        newData
+      );
+
+      try {
+        const response = await axios.post(
+          'http://localhost:5000/multicut-solver',
+          {
+            graph: newData,
+          }
+        );
+        console.log('later responses', response.data);
+        setOptimalCost(response.data.optimal_value);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (solvedCount > 0) {
+      generateNewDataAndCallSolver(); // Generate new data and call solver after the solution
+    }
   }, [solvedCount]);
 
   useEffect(() => {
@@ -135,6 +152,7 @@ function ChallengeComponent() {
       </div>
     );
   } else {
+    console.log('before rendering, data:', data);
     return (
       <div>
         <div id="game-info" className="game-info">
