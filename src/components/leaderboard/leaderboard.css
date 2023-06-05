@@ -74,6 +74,12 @@
   text-align: left;
 }
 
+.data-table th:last-child,
+.data-table td:last-child {
+  padding: 10px;
+  text-align: right;
+}
+
 .data-table th {
   background-color: #f2f2f2;
   font-weight: bold;

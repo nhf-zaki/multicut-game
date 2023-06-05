@@ -13,10 +13,17 @@ const prepareGroupedData = () => {
     if (!groupedData[item.type]) {
       groupedData[item.type] = [];
     }
-    groupedData[item.type].push({
-      type: item.type,
-      timeObj: getTimeObj(item.time),
-    });
+    if (item.type === "challenge") {
+      groupedData[item.type].push({
+        type: item.type,
+        solvedCount: item.solvedCount,
+      });
+    } else {
+      groupedData[item.type].push({
+        type: item.type,
+        timeObj: getTimeObj(item.time),
+      });
+    }
   });
   return groupedData;
 };
@@ -66,8 +73,12 @@ const Leaderboard = () => {
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Graph Type</th>
-                    <th>Time</th>
+                    <th>Game Mode</th>
+                    {data[activeTab][0].type === "challenge" ? (
+                      <th>Solved Count</th>
+                    ) : (
+                      <th>Time</th>
+                    )}
                   </tr>
                 </thead>
                 <tbody>
@@ -75,10 +86,14 @@ const Leaderboard = () => {
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{typeMapping[item.type]}</td>
-                      <td>
-                        {item.timeObj.minutes}:{item.timeObj.seconds}.
-                        {item.timeObj.millis}0
-                      </td>
+                      {item.type === "challenge" ? (
+                        <td>{item.solvedCount}</td>
+                      ) : (
+                        <td>
+                          {item.timeObj.minutes}:{item.timeObj.seconds}.
+                          {item.timeObj.millis}0
+                        </td>
+                      )}
                     </tr>
                   ))}
                 </tbody>
