@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import generateGridGraph from '../../data/grid-graph';
 import generateCosts from '../../utils/generateCosts';
@@ -13,7 +13,6 @@ import axios from 'axios';
 import useLocalStorage from '../../hooks/useLocalStorage';
 
 import './game.css';
-import getTimeObj from '../../utils/timeObject';
 
 const fetchData = () => {
   const randInts = [];
@@ -28,16 +27,22 @@ const fetchData = () => {
 };
 
 const chargeStrength = (nodesLength = 20) => {
-  // TODO: need to add more suitable condition
-  return nodesLength < 15 ? -500 : nodesLength > 40 ? -30 : -70;
+  return nodesLength < 10
+    ? -800
+    : nodesLength < 13
+    ? -700
+    : nodesLength < 18
+    ? -600
+    : nodesLength > 40
+    ? -30
+    : -70;
 };
 
 function ChallengeComponent() {
   const navigate = useNavigate();
-  const gameType = useParams().gameType;
-  // const dataByType = fetchData(gameType);
+  const gameType = "challenge";
+  const timeoutVal = 10 * 60 * 1000; // 10 minute timer
 
-  // const [data, setData] = useState(dataByType);
   const [data, setData] = useState(fetchData());
   const [totalCost, setTotalCost] = useState(0);
   const [optimalCost, setOptimalCost] = useState(0);
@@ -70,7 +75,6 @@ function ChallengeComponent() {
 
   useEffect(() => {
     const fetchDataAndInitialize = async () => {
-      console.log('getting initial data and solver call', data);
       try {
         const response = await axios.post(
           'http://localhost:5000/multicut-solver',
@@ -85,15 +89,27 @@ function ChallengeComponent() {
       }
     };
 
-    fetchDataAndInitialize(); // Call the function to fetch initial data and initialize solver
+    fetchDataAndInitialize(); // Call the function to fetch initial data and get solver response
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsCompleted(true);
+    }, timeoutVal);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
+
+  // determine the current graph is solved
   useEffect(() => {
     if (optimalCost !== 0 && totalCost === optimalCost) {
       setSolvedCount((prevCount) => prevCount + 1); // Increment solvedCount
     }
   }, [totalCost, optimalCost]);
 
+  // update solved count, generate new graph, and update new optimal cost
   useEffect(() => {
     const generateNewDataAndCallSolver = async () => {
       const newData = fetchData(); // Generate new data
@@ -124,35 +140,37 @@ function ChallengeComponent() {
   }, [solvedCount]);
 
   useEffect(() => {
-    if (timeRef.current > 0) {
+    // save the solved count after completing the challenge
+    if (timeRef.current > 0 && solvedCount > 0) {
       if (
         Object.keys(completedTime).length &&
         typeof completedTime !== 'string'
       ) {
         setCompletedTime([
           ...completedTime,
-          { time: timeRef.current, type: gameType },
+          { solvedCount: solvedCount, type: gameType },
         ]);
       } else {
-        setCompletedTime([{ time: timeRef.current, type: gameType }]);
+        setCompletedTime([{ solvedCount: solvedCount, type: gameType }]);
       }
     }
   }, [isCompleted]);
 
   if (isCompleted) {
-    const timeObj = getTimeObj(timeRef.current);
     const scores = {
       gameType: gameType,
-      totalCost: totalCost,
-      completedTime: `${timeObj.minutes}:${timeObj.seconds}.${timeObj.millis}0`,
+      solvedCount: solvedCount,
     };
     return (
       <div>
-        <CompletionPopup scores={scores} />
+        {solvedCount > 0 ? (
+          <CompletionPopup scores={scores} />
+        ) : (
+          <CompletionPopup scores={scores} isFailed={true} />
+        )}
       </div>
     );
   } else {
-    console.log('before rendering, data:', data);
     return (
       <div>
         <div id="game-info" className="game-info">
@@ -165,7 +183,7 @@ function ChallengeComponent() {
           {gameType !== 'tree' && (
             <p>Optimal: {optimalCost === 0 ? '...' : optimalCost}</p>
           )}
-          <StopWatch ref={timeRef} />
+          <StopWatch ref={timeRef} countdown={true} timeoutVal={timeoutVal} />
         </div>
         <GraphComponent
           data={data}
