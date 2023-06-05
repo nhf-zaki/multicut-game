@@ -5,6 +5,7 @@ import './StopWatch.css';
 const StopWatch = forwardRef(function Stopwatch(props, ref) {
   const [isActive] = useState(true);
   const [time, setTime] = useState(0);
+  const countdown = props.countdown;
 
   useEffect(() => {
     let interval = null;
@@ -22,11 +23,20 @@ const StopWatch = forwardRef(function Stopwatch(props, ref) {
     };
   }, [isActive]);
 
-  return (
-    <div className="stop-watch">
-      <Timer time={time} />
-    </div>
-  );
+  if (countdown) {
+    const countdownTime = props.timeoutVal - time;
+    return (
+      <div className="stop-watch">
+        <Timer time={countdownTime} />
+      </div>
+    );
+  } else {
+    return (
+      <div className="stop-watch">
+        <Timer time={time} />
+      </div>
+    );
+  }
 });
 
 export default StopWatch;

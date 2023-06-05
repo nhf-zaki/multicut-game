@@ -20,6 +20,10 @@
   animation: popup-animation 1s ease-in-out;
 }
 
+.popup-content .failed {
+  margin-bottom: 5vh;
+}
+
 @keyframes popup-animation {
   0% {
     opacity: 0;
@@ -58,7 +62,7 @@
   background-color: #7c869b;
 }
 
-/* Leaderboard Results */
+/* Results */
 .scoreboard-results {
   margin: 5vh 0vh;
   width: 100%;
