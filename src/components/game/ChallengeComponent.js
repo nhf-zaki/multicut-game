@@ -27,15 +27,45 @@ const fetchData = () => {
 };
 
 const chargeStrength = (nodesLength = 20) => {
-  return nodesLength < 10
-    ? -800
-    : nodesLength < 13
-    ? -700
-    : nodesLength < 18
-    ? -600
-    : nodesLength > 40
-    ? -30
-    : -70;
+  let strength;
+
+  switch (nodesLength) {
+    case 9:
+      strength = -800;
+      break;
+    case 12:
+      strength = -550;
+      break;
+    case 15:
+      strength = -250;
+      break;
+    case 16:
+      strength = -250;
+      break;
+    case 18:
+      strength = -120;
+      break;
+    case 20:
+      strength = -200;
+      break;
+    case 24:
+      strength = -100;
+      break;
+    case 25:
+      strength = -150;
+      break;
+    case 30:
+      strength = -100;
+      break;
+    case 36:
+      strength = -80;
+      break;
+    default:
+      strength = -30;
+      break;
+  }
+
+  return strength;
 };
 
 function ChallengeComponent() {
@@ -171,6 +201,8 @@ function ChallengeComponent() {
       </div>
     );
   } else {
+    console.log(data.nodes.length);
+    console.log(chargeStrength(data.nodes.length));
     return (
       <div>
         <div id="game-info" className="game-info">
@@ -188,7 +220,7 @@ function ChallengeComponent() {
         <GraphComponent
           data={data}
           handleLinkClick={handleLinkClick}
-          chargeStrength={chargeStrength(gameType)}
+          chargeStrength={chargeStrength(data.nodes.length)}
         ></GraphComponent>
       </div>
     );
