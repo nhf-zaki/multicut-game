@@ -13,7 +13,7 @@ const prepareGroupedData = () => {
     if (!groupedData[item.type]) {
       groupedData[item.type] = [];
     }
-    if (item.type === "challenge") {
+    if (item.type === 'challenge') {
       groupedData[item.type].push({
         type: item.type,
         solvedCount: item.solvedCount,
@@ -74,7 +74,7 @@ const Leaderboard = () => {
                   <tr>
                     <th>#</th>
                     <th>Game Mode</th>
-                    {data[activeTab][0].type === "challenge" ? (
+                    {data[activeTab][0].type === 'challenge' ? (
                       <th>Solved Count</th>
                     ) : (
                       <th>Time</th>
@@ -86,7 +86,7 @@ const Leaderboard = () => {
                     <tr key={index}>
                       <td>{index + 1}</td>
                       <td>{typeMapping[item.type]}</td>
-                      {item.type === "challenge" ? (
+                      {item.type === 'challenge' ? (
                         <td>{item.solvedCount}</td>
                       ) : (
                         <td>

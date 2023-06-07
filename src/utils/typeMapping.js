@@ -6,7 +6,7 @@ const typeMapping = {
   'grid-graph-medium': 'Grid Graph (medium)',
   'complete-graph-large': 'Complete Graph (large)',
   'grid-graph-large': 'Grid Graph (large)',
-  'challenge': 'Challenge',
+  challenge: 'Challenge',
   // 'custom-graph': 'Custom Graph',
 };
 

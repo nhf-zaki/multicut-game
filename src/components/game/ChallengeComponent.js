@@ -70,7 +70,7 @@ const chargeStrength = (nodesLength = 20) => {
 
 function ChallengeComponent() {
   const navigate = useNavigate();
-  const gameType = "challenge";
+  const gameType = 'challenge';
   const timeoutVal = 10 * 60 * 1000; // 10 minute timer
 
   const [data, setData] = useState(fetchData());
@@ -112,7 +112,7 @@ function ChallengeComponent() {
             graph: data,
           }
         );
-        console.log('init response', response.data);
+        console.log('response', response.data);
         setOptimalCost(response.data.optimal_value);
       } catch (error) {
         console.log(error);
@@ -145,10 +145,6 @@ function ChallengeComponent() {
       const newData = fetchData(); // Generate new data
       setData(newData);
       setTotalCost(0);
-      console.log(
-        'setting new data, resetting totalCost and solver call',
-        newData
-      );
 
       try {
         const response = await axios.post(
@@ -157,7 +153,7 @@ function ChallengeComponent() {
             graph: newData,
           }
         );
-        console.log('later responses', response.data);
+        console.log('responses', response.data);
         setOptimalCost(response.data.optimal_value);
       } catch (error) {
         console.log(error);
@@ -201,8 +197,6 @@ function ChallengeComponent() {
       </div>
     );
   } else {
-    console.log(data.nodes.length);
-    console.log(chargeStrength(data.nodes.length));
     return (
       <div>
         <div id="game-info" className="game-info">
