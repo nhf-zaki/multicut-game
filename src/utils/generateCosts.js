@@ -11,14 +11,15 @@ function generateCosts(data) {
 }
 
 function getRandomCost() {
-  let cost = Math.floor(Math.random() * 21) - 10; // Generate random value from -10 to 10
+  let positiveCostPercentage = Math.random() * 21 + 55; // Random value between 55 and 75
 
-  while (cost === 0) {
-    // Exclude 0 as a possible value
-    cost = Math.floor(Math.random() * 21) - 10;
+  let isPositive = Math.random() < positiveCostPercentage / 100;
+
+  if (!isPositive) {
+    return -Math.floor(Math.random() * 10) - 1; // Generate a random negative cost from -1 to -10
   }
 
-  return cost;
+  return Math.floor(Math.random() * 10) + 1; // Generate a random positive cost from 1 to 10
 }
 
 export default generateCosts;
