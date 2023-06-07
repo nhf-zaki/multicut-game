@@ -122,7 +122,7 @@ function GameComponent() {
           setOptimalCost(response.data.optimal_value);
         })
         .catch((error) => {
-          console.log(error);
+          console.error(error);
         });
     };
     solverResp();
