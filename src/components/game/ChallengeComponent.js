@@ -103,24 +103,35 @@ function ChallengeComponent() {
       : setTotalCost(totalCost + link.cost);
   };
 
-  useEffect(() => {
-    const fetchDataAndInitialize = async () => {
-      try {
-        const response = await axios.post(
-          'http://localhost:5000/multicut-solver',
-          {
-            graph: data,
-          }
-        );
-        console.log('response', response.data);
-        setOptimalCost(response.data.optimal_value);
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  const fetchSolverResponse = async (requestData) => {
+    try {
+      const response = await axios.post(
+        'http://localhost:5000/multicut-solver',
+        {
+          graph: requestData,
+        }
+      );
+      console.log('response', response.data);
+      setOptimalCost(response.data.optimal_value);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-    fetchDataAndInitialize(); // Call the function to fetch initial data and get solver response
+  useEffect(() => {
+    fetchSolverResponse(data);
   }, []);
+
+  // update solved count, generate new graph, and update new optimal cost
+  useEffect(() => {
+    if (solvedCount > 0) {
+      const newData = fetchData();
+      setData(newData);
+      setTotalCost(0);
+
+      fetchSolverResponse(newData);
+    }
+  }, [solvedCount]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -138,32 +149,6 @@ function ChallengeComponent() {
       setSolvedCount((prevCount) => prevCount + 1); // Increment solvedCount
     }
   }, [totalCost, optimalCost]);
-
-  // update solved count, generate new graph, and update new optimal cost
-  useEffect(() => {
-    const generateNewDataAndCallSolver = async () => {
-      const newData = fetchData(); // Generate new data
-      setData(newData);
-      setTotalCost(0);
-
-      try {
-        const response = await axios.post(
-          'http://localhost:5000/multicut-solver',
-          {
-            graph: newData,
-          }
-        );
-        console.log('responses', response.data);
-        setOptimalCost(response.data.optimal_value);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    if (solvedCount > 0) {
-      generateNewDataAndCallSolver(); // Generate new data and call solver after the solution
-    }
-  }, [solvedCount]);
 
   useEffect(() => {
     // save the solved count after completing the challenge
