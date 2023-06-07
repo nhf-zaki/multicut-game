@@ -23,7 +23,11 @@ const CompletionPopup = ({ scores, isFailed }) => {
           ) : (
             <div className="success">
               <h2>Excellent!</h2>
-              <p>You have solved the graph!</p>
+              {scores.gameType === 'challenge' ? (
+                ''
+              ) : (
+                <p>You have solved the graph!</p>
+              )}
               <table className="scoreboard-results">
                 <tbody>
                   <tr>
