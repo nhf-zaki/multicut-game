@@ -8,6 +8,7 @@ function GraphComponent(props) {
     const forceRef = useRef(null);
     useEffect(() => {
       forceRef.current.d3Force('charge').strength(props.chargeStrength);
+      forceRef.current.centerAt(10, 30);
     });
 
     return (
