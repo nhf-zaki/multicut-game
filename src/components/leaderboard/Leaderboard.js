@@ -18,6 +18,7 @@ const prepareGroupedData = () => {
         type: item.type,
         solvedCount: item.solvedCount,
       });
+      groupedData['challenge'].sort((b, a) => a.solvedCount - b.solvedCount);
     } else {
       groupedData[item.type].push({
         type: item.type,
