@@ -1,7 +1,7 @@
 {
   "name": "multicut-game",
   "version": "0.1.0",
-  "homepage": "https://gitname.github.io/multicut-game",
+  "homepage": "https://nhf-zaki.github.io/multicut-game",
   "private": true,
   "dependencies": {
     "@szhsin/react-menu": "^3.5.3",
