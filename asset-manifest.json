@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/multicut-game/static/css/main.f321a70b.css",
-    "main.js": "/multicut-game/static/js/main.50d67501.js",
-    "static/js/787.93ff04e0.chunk.js": "/multicut-game/static/js/787.93ff04e0.chunk.js",
+    "main.css": "/multicut-game/static/css/main.17181c48.css",
+    "main.js": "/multicut-game/static/js/main.07707cf1.js",
+    "static/js/787.6d082a03.chunk.js": "/multicut-game/static/js/787.6d082a03.chunk.js",
     "static/media/valid.png": "/multicut-game/static/media/valid.1214c50b0ae282e5b8af.png",
     "static/media/invalid.png": "/multicut-game/static/media/invalid.80d09d11c6a433f53e82.png",
     "index.html": "/multicut-game/index.html",
-    "main.f321a70b.css.map": "/multicut-game/static/css/main.f321a70b.css.map",
-    "main.50d67501.js.map": "/multicut-game/static/js/main.50d67501.js.map",
-    "787.93ff04e0.chunk.js.map": "/multicut-game/static/js/787.93ff04e0.chunk.js.map"
+    "main.17181c48.css.map": "/multicut-game/static/css/main.17181c48.css.map",
+    "main.07707cf1.js.map": "/multicut-game/static/js/main.07707cf1.js.map",
+    "787.6d082a03.chunk.js.map": "/multicut-game/static/js/787.6d082a03.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f321a70b.css",
-    "static/js/main.50d67501.js"
+    "static/css/main.17181c48.css",
+    "static/js/main.07707cf1.js"
   ]
 }
