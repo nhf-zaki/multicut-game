@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createHashRouter, RouterProvider } from 'react-router-dom';
 
 import MainMenu from './components/menu/MainMenu';
 import NewGameMenu from './components/menu/NewGameMenu';
@@ -9,7 +9,7 @@ import Leaderboard from './components/leaderboard/Leaderboard';
 
 import './App.css';
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: '/',
     element: <MainMenu />,
